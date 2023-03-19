@@ -18,6 +18,7 @@
     <module>product-service</module>
     <module>order-service</module>
     <module>inventory-service</module>
+      <module>discovery-server</module>
   </modules>
   <name>microservices-onlineshopping Maven Webapp</name>
   <url>http://maven.apache.org</url>

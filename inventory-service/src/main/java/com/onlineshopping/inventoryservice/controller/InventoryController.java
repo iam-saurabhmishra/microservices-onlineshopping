@@ -1,12 +1,13 @@
 package com.onlineshopping.inventoryservice.controller;
 
+import com.onlineshopping.inventoryservice.dto.InventoryResponse;
 import com.onlineshopping.inventoryservice.service.InventoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.websocket.server.PathParam;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +17,9 @@ public class InventoryController {
 
    private final InventoryService inventoryServic;
 
-   @GetMapping("/{skuCode}")
-    public boolean isInStock(@PathVariable("skuCode") String skuCode){
+   @GetMapping
+    public List<InventoryResponse> isInStock(@RequestParam List<String> skuCode){
+
        return inventoryServic.isInStock(skuCode);
     }
 }
