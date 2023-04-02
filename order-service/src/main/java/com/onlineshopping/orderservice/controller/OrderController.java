@@ -3,6 +3,7 @@ package com.onlineshopping.orderservice.controller;
 import com.onlineshopping.orderservice.dto.OrderRequest;
 import com.onlineshopping.orderservice.model.ResponseEnum;
 import com.onlineshopping.orderservice.service.OrderService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,7 @@ public class OrderController {
 
     @PostMapping
    // @ResponseStatus(HttpStatus.CREATED)
+    @CircuitBreaker(name = "inventory" , fallbackMethod = "fallbackMethod")
     public ResponseEntity<String> placeOrder (@RequestBody OrderRequest orderRequest){
         ResponseEnum responseEnum = orderService.placeOrder(orderRequest);
         if(ResponseEnum.SUCCESS.equals(responseEnum)) {
@@ -36,5 +38,9 @@ public class OrderController {
     @GetMapping
     public List<OrderRequest> getAllOrders() {
         return orderService.getAllOrders();
+    }
+
+    public ResponseEntity<String> fallbackMethod(OrderRequest orderRequest, RuntimeException runtimeException){
+        return ResponseEntity.ok("Oops something went wrong , Please try again...");
     }
 }
